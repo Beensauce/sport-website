@@ -13,3 +13,10 @@ Django web application to improve awareness of atheletes in my school
 
 - Django
 - HTML, CSS, JS
+
+## How to install and use
+
+1. First download the repository
+2. Create a virtual envionment (optional)
+3. Install the requirements at requirements.txt with pip install -r requirements.txt
+4. in the Sport-website folder, run py manage.py runserver
