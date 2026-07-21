@@ -19,4 +19,5 @@ Django web application to improve awareness of atheletes in my school
 1. First download the repository
 2. Create a virtual envionment (optional)
 3. Install the requirements at requirements.txt with pip install -r requirements.txt
-4. in the Sport-website folder, run py manage.py runserver
+4. Create the .env file with your own secret key, use this website - https://djecrety.ir/
+5. in the Sport-website folder, run py manage.py runserver
