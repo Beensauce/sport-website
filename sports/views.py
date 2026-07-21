@@ -121,7 +121,7 @@ def get_more_teams(request, year):
 @ratelimit(key='ip', rate="100/min")
 def get_more_results(request, level, sport, year, amount):
     team = get_object_or_404(Team, level__code=level, sport__code=sport, year=year)
-    results = Game.objects.filter(dcb_team=team, is_finished=True).order_by('-date')[amount: amount + 4]
+    results = Game.objects.filter(dcb_team=team, is_finished=True).order_by('-date')[amount: amount + 30]
     result_data = []
     team_name_str = str(team)
 
@@ -133,8 +133,8 @@ def get_more_results(request, level, sport, year, amount):
             'raw_date': result.date,
             'raw_time': result.time,
             'date': formats.date_format(result.date, "F j, Y"),
-            'time': formats.time_format(result.time, "g:i a") if result.time else None,
-            'location':result.location,
+            'time': formats.time_format(result.time, "g:i a") if result.time else "To be dated",
+            'location':result.location if result.location else "Location to be dated",
             'dcb_score':result.dcb_score,
             'opp_score':result.opp_score,
             'is_finished':True
@@ -145,7 +145,7 @@ def get_more_results(request, level, sport, year, amount):
 @ratelimit(key='ip', rate="100/min")
 def get_more_upcomings(request, level, sport, year, amount):
     team = get_object_or_404(Team, level__code=level, sport__code=sport, year=year)
-    upcomings = Game.objects.filter(dcb_team=team, is_finished=False).order_by('-date')[amount: amount + 4]
+    upcomings = Game.objects.filter(dcb_team=team, is_finished=False).order_by('-date')[amount: amount + 30]
     upcoming_data = []
 
     for upcoming in upcomings:
@@ -156,8 +156,8 @@ def get_more_upcomings(request, level, sport, year, amount):
             'raw_date': upcoming.date,
             'raw_time': upcoming.time,
             'date': formats.date_format(upcoming.date, "F j, Y"),
-            'time': formats.time_format(upcoming.time, "g:i a") if upcoming.time else None,
-            'location':upcoming.location,
+            'time': formats.time_format(upcoming.time, "g:i a") if upcoming.time else "To be dated",
+            'location':upcoming.location if upcoming.location else "Location to be dated",
             'dcb_score':upcoming.dcb_score,
             'opp_score':upcoming.opp_score,
             'is_finished':False

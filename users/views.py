@@ -92,12 +92,6 @@ def captain_panel(request, year=None):
             game_form = GameForm(request.POST)
             if game_form.is_valid():
                 game = game_form.save(commit=False)    
-
-                # Convert empty strings to None for integer fields
-                if not game.dcb_score:
-                    game.dcb_score = None
-                if not game.opp_score:
-                    game.opp_score = None
                 
                 # Validate: if game is finished, scores must be provided
                 if game.is_finished:

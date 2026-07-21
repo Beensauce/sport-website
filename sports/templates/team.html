@@ -63,8 +63,16 @@
                             <div class="team-name">vs {{ result.opposition }}</div>
                             <div class="date-location">
                                 <div>{{ result.date }}</div>
-                                <div>{{ result.time }}</div>
-                                <div>{{ result.location }}</div>
+                                {% if result.time %}
+                                    <div>{{ result.time }}</div>
+                                {% else %}
+                                    <div>To be dated</div>
+                                {% endif %}
+                                {% if result.location %}
+                                    <div>{{ result.location }}</div>
+                                {% else %}
+                                    <div>Location to be dated</div>
+                                {% endif %}
                             </div>
                             <div class="score-container">
                                 <div class="score-team">
@@ -93,8 +101,16 @@
                                 <div class="team-name">vs {{ upcoming.opposition }}</div>
                                 <div class="date-location">
                                     <div>{{ upcoming.date }}</div>
-                                    <div>{{ upcoming.time }}</div>
-                                    <div>{{ upcoming.location }}</div>
+                                    {% if upcoming.time %}
+                                        <div>{{ upcoming.time }}</div>
+                                    {% else %}
+                                        <div>To be dated</div>
+                                    {% endif %}
+                                    {% if upcoming.location %}
+                                        <div>{{ upcoming.location }}</div>
+                                    {% else %}
+                                        <div>Location to be dated</div>
+                                    {% endif %}
                                 </div>
                                 <div>Upcoming game, come and support :D</div>
                             </div>    
