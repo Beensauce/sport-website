@@ -1,0 +1,25 @@
+#login {
+    display: inline-block;
+    outline: 0;
+    cursor: pointer;
+    text-align: center;
+    border: 1px solid #babfc3;
+    padding: 7px 16px;
+    min-height: 36px;
+    min-width: 36px;
+    color: #202223;
+    background: #ffffff;
+    border-radius: 4px;
+    font-weight: 500;
+    font-size: 14px;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 1px 0px 0px;
+    transition: transform 200ms;
+    margin: 1rem; 
+}
+
+#login:hover {
+    background: #f6f6f7;
+    outline: 1px solid transparent;
+    transform: translateY(-2px);
+}              
+        

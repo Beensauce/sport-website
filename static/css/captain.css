@@ -1,0 +1,371 @@
+#panels {
+    display: flex;
+    flex-direction: row;
+}
+
+#head-text{
+    margin-bottom: 2rem;
+}
+
+/* Table edits */
+
+.player-list-container h1 {
+    margin:1rem;
+}
+
+.player-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1.5rem;
+}
+
+.player-table th, 
+.player-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.player-table th {
+    background-color: #f5f5f5;
+    font-weight: bold;
+}
+
+.profile-pic-thumb {
+    width: 2.8rem;
+    height: 2.8rem;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.captain-badge {
+    background-color: #ffd700;
+    font-size: 0.75rem;
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin-left: 0.5rem;
+    font-weight: bold;
+    display: inline-block;
+}
+
+.player-quote {
+    font-style: italic;
+    color: #555;
+}
+
+.submit {
+    display: inline-block;
+    outline: 0;
+    cursor: pointer;
+    text-align: center;
+    border: 1px solid #babfc3;
+    padding: 7px 16px;
+    min-height: 36px;
+    min-width: 36px;
+    color: #202223;
+    background: #ffffff;
+    border-radius: 4px;
+    font-weight: 500;
+    font-size: 14px;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 1px 0px 0px;
+    transition: transform 200ms;
+    margin: 1rem; 
+}
+
+.submit:hover {
+    background: #f6f6f7;
+    outline: 1px solid transparent;
+    transform: translateY(-2px);
+}              
+
+#delete {
+    color:red;
+}
+
+#delete:hover {
+    background: #ffb0b0;
+    outline: 1px solid transparent;
+    transform: translateY(-2px);
+}     
+
+form {
+    margin: 1rem;
+}
+
+.games{
+    padding: 3% 2%;
+}
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.upcoming{
+    background-color: var(--white-kind-of);
+}
+
+.upcoming-container{
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 40px;
+}
+
+.results-container {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 40px;
+}
+
+.result-card {
+    background-color: white;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    flex: 1;
+    min-width: 280px;
+    max-width: 360px;
+    border: 1px solid #eaeaea;
+    position: relative;
+    transition: transform 0.3s ease;
+}
+
+.sport-tag {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 15px;
+    background-color: #f0f0f0;
+    border: 1px solid #d15b5b;
+    color: var(--red);
+    font-size: 0.8rem;
+    margin-bottom: 10px;
+}
+
+.head-text{
+    padding-top:30px;
+    text-align: center;
+    position:relative;
+}
+
+.head-text::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 3px;
+    background-color: var(--red);
+}
+
+.winner-indicator {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 30px;
+    height: 30px;
+    background-color: var(--red);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 0.8rem;
+}
+
+.team-name {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+.date-location {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 15px;
+}
+
+.score-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+}
+
+.score-team {
+    text-align: center;
+}
+
+.score-team h4 {
+    font-size: 0.8rem;
+    color: #666;
+    margin-bottom: 5px;
+}
+
+.score-team span {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: #1a2d4e;
+}
+
+.vs-separator {
+    font-size: 1.2rem;
+    color: #ccc;
+    margin: 0 10px;
+}
+
+.panel {
+    width: 50%;
+}
+
+
+.model {
+    position: fixed;
+    z-index: 1000;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 2.5rem;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+}
+
+.close-btn {
+  position: absolute;
+  top: 12px;
+  right: 18px;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+  color: #888;
+}
+
+.close-btn:hover {
+  color: #000;
+}
+
+
+.form-control{
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+/* Juicy button */
+.filter-section{
+  margin-left:7.5%;
+}
+
+#season-select {
+  padding: 0.5rem;
+  background-color: #ffffff;
+  color: #2c3e50;
+  border: 2px solid #bdc3c7;
+  border-radius: 8px; 
+}
+
+/* Normal edit buttons */
+.edit-game-btn, .delete-game-btn{
+    background-color: white;
+    padding: 2px
+}
+
+
+@media (max-width: 1200px){
+    #panels {
+        display: flex;
+        flex-direction: column;
+    }
+    .panel {
+        width: 100%;
+    }
+}
+
+@media (max-width: 605px) {
+    /* The top row  */
+    .player-table thead {
+        display: none;
+    }
+
+    .player-table tr {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        padding: 0.8rem;
+        margin-bottom: 1rem;
+    }
+
+    .player-table td {
+        display: block;
+        padding: 4px 6px;
+        border-bottom: none;
+    }
+
+    .player-table td:nth-child(1) { /* Photo */
+        width: 15%;
+        order: 1;
+    }
+    
+    .player-table td:nth-child(2) { /* Name & Badge */
+        width: 65%;
+        order: 2;
+        font-weight: bold;
+        font-size: 1.1rem;
+    }
+
+    .player-table td:nth-child(7) { /* Checkbox */
+        width: 20%;
+        order: 3;
+        text-align: right;
+    }
+
+    .player-table td:nth-child(3), /* Number */
+    .player-table td:nth-child(4), /* Position */
+    .player-table td:nth-child(5) { /* Year */
+        width: auto;
+        order: 4;
+        font-size: 0.85rem;
+        color: #555;
+        background-color: #f0f2f5;
+        border-radius: 4px;
+        margin: 6px 4px 0 0;
+        padding: 3px 8px;
+    }
+
+    .player-table .player-quote {
+        width: 100%;
+        order: 5;
+        margin-top: 10px;
+        padding-top: 8px !important;
+        border-top: 1px dashed #eee;
+        font-size: 0.9rem;
+    }
+    
+    /* Full width buttons */
+    .submit {
+        display: block;
+        width: 95%;
+        padding: 0;
+        margin: 0.5rem auto;
+    }
+}

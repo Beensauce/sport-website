@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block head %}
+    <title>{{ player }} - {{ player.team }} | DCB</title>
+    <link rel="stylesheet" href="{% static 'css/profile.css' %}">
+{% endblock %}
+{% block meta %}
+    <!-- Meta tags -->
+    <meta property="og:title" content="{{ player }} - {{ player.team }} | DCB">
+    <meta name="description" content="DCB player profile for {{ player }}">
+    <meta property="og:description" content="DCB player profile for {{ player }}">
+    <meta property="og:image" content="{{ player.profile_pic_url }}">
+{% endblock %}
+{% block content %}
+    
+    <!-- Profiles -->
+    <main class="profiles">
+        <!-- Captain -->
+        <article id="captain" class="profile-card anchor-offset" aria-labelledby="captain-name">
+            <div class="avatar-wrap">
+                    <img src="{{ player.profile_pic_url }}" alt="{{ player }}" />
+            </div>
+            <h3 id="captain-name" class="player-name">{{ player }}</h3>
+            {% if player.is_captain %}
+                <div class="captain-badge">Captain</div>
+            {% endif %}
+
+            <div class="player-number">{{ player.shirt_number }}</div>
+            <div class="player-details"><a class="team-link" href="{% url 'team' level=player.team.level.code sport=player.team.sport.code year=player.team.year %}">{{ player.team }}</a> - {{ player.position }}</div>
+            <div class="player-details">Year: {{ player.year }}</div>
+            <blockquote class="quote">“{{ player.quote }}”</blockquote>
+        </article>
+ 
+        <!-- Roster Grid -->
+        <section id="roster" class="Related players">
+            <h2 class="section-title">Related players</h2>
+            <div class="players-grid">
+            {% for mate in teamates %}
+                <a href="{% url 'player' level=mate.team.level.code sport=mate.team.sport.code year=mate.team.year pk=mate.pk %}" class="player-card">
+                        <img src="{{ mate.profile_pic_url }}" alt="{{ mate }}" />
+                    <div class="name">{{ mate }}</div>
+                    <div class="position">{{ mate.position }}</div>
+                </a>
+
+            {% endfor %}
+            </div>
+        </section>
+    </main>
+    </body>     
+{% endblock %}

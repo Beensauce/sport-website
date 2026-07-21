@@ -1,0 +1,364 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block head %}
+    <title>{{ team }} Admin Panel</title>
+    <!-- Tell Google to completely ignore this private page -->
+    <meta name="robots" content="noindex, nofollow">
+    
+    <link rel="stylesheet" href="{% static 'css/captain.css' %}">
+    <script src="{% static 'js/captain.js' %}" defer></script>
+{% endblock %}
+{% block content %}
+    <h1 id="head-text" class="head-text" data-team-level="{{ team.level.code }}" data-team-sport="{{ team.sport.code }}" data-team-year="{{ team.year }}">{{ team }}</h1>
+    <div class="filter-section">
+        <label for="season-select">Filter by year:</label>
+            <select name="season" id="season-select" onchange="if(this.value) window.location.href=this.value;">
+            {% for i in years %}
+                {% if i == current_year %}
+                    <option value="/captain/{{ i }}" selected="selected">{{ i }}</option>
+                {% else %}
+                    <option value="/captain/{{ i }}">{{ i }}</option>
+                {% endif %}
+            {% endfor %}
+        </select>
+    </div>
+    <div id="panels">
+        <div class="player-list-container panel">
+            <h1>Unregistered Players</h1>
+            <form method="POST" action="{% url 'captain-panel-by-year' year=current_year %}">
+                {% csrf_token %}
+                <table class="player-table">
+                    <thead>
+                        <tr>
+                            <th>Photo</th>
+                            <th>Name</th>
+                            <th>Number</th>
+                            <th>Position</th>
+                            <th>Year</th>
+                            <th>Quote</th>
+                            <th>Select</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for player in unreg_players %}
+                            <tr>
+                                <td>
+                                    <img src="{{ player.profile_pic_url }}" alt="{{ player }}" class="profile-pic-thumb"/>
+                                </td>
+                                
+                                <!-- Name & Captain Badge Column -->
+                                <td class="player-name">
+                                    {{ player }}
+                                    {% if player.is_captain %}
+                                        <span class="captain-badge">Captain</span>
+                                    {% endif %}
+                                </td>
+                                
+                                <!-- Details Columns -->
+                                <td class="player-number">#{{ player.shirt_number }}</td>
+                                <td>{{ player.position }}</td>
+                                <td>Year {{ player.year }}</td>
+                                
+                                <!-- Quote Column -->
+                                <td class="player-quote">“{{ player.quote }}”</td>
+                                <td><input type="checkbox" name="player_ids" value="{{ player.id }}"></td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <button class="submit" type="submit" name='action' value="reg_players">Update</button>
+                <button class="submit" id='delete' type="submit" name='action' value="del_players" onclick="return confirm('Confirm delete? This cannot be undone. Double check plspls');">delete players</button>
+            </form>    
+
+            <h1>Registered Players</h1>
+            <form method="POST" action="{% url 'captain-panel-by-year' year=current_year %}">
+                {% csrf_token %}
+                <table class="player-table">
+                    <thead>
+                        <tr>
+                            <th>Photo</th>
+                            <th>Name</th>
+                            <th>Number</th>
+                            <th>Position</th>
+                            <th>Year</th>
+                            <th>Quote</th>
+                            <th>Unapprove</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for player in reg_players %}
+                            <tr>
+                                <td>
+                                    {% if player.image %}
+                                        <img src="{{ player.image.url }}" alt="{{ player }}" class="profile-pic-thumb"/>
+                                    {% else %}
+                                        <img src="{{ player.profile_pic_url }}" alt="{{ player }}" class="profile-pic-thumb"/>
+                                    {% endif %}
+                                </td>
+                                
+                                <!-- Name & Captain Badge Column -->
+                                <td class="player-name">
+                                    {{ player }}
+                                    {% if player.is_captain %}
+                                        <span class="captain-badge">Captain</span>
+                                    {% endif %}
+                                </td>
+                                
+                                <!-- Details Columns -->
+                                <td class="player-number">#{{ player.shirt_number }}</td>
+                                <td>{{ player.position }}</td>
+                                <td>Year {{ player.year }}</td>
+                                
+                                <!-- Quote Column -->
+                                <td class="player-quote">“{{ player.quote }}”</td>
+                                <td><input type="checkbox" name="unapproved_player_ids" value="{{ player.id }}"></td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <button class="submit" type="submit" name='action' value="unreg_players">Update</button>
+            </form>
+
+            <!-- Coaches list -->
+             <h1>Registered Coaches</h1>
+            <form method="POST" action="{% url 'captain-panel-by-year' year=current_year %}">
+                {% csrf_token %}
+                <table class="coach-table player-table">
+                    <thead>
+                        <tr>
+                            <th>Photo</th>
+                            <th>Name</th>
+                            <th>Student coach</th>
+                            <th>Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for coach in coaches %}
+                            <tr>
+                                <td>
+                                    {% if coach.image %}
+                                        <img src="{{ coach.image.url }}" alt="{{ coach }}" class="profile-pic-thumb"/>
+                                    {% else %}
+                                        <img src="{{ coach.profile_pic_url }}" alt="{{ coach }}" class="profile-pic-thumb"/>
+                                    {% endif %}
+                                </td>
+                                
+                                <!-- Name Column -->
+                                <td class="player-name">
+                                    {{ coach }}
+                                </td>
+                                
+                                <!-- Details Columns -->
+                                <td>{{ coach.is_student_coach }}</td>
+                                
+                                <!-- Stuff Column -->
+                                <td><input type="checkbox" name="delete_coach_ids" value="{{ coach.id }}"></td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <button class="submit" id='delete' type="submit" name='action' value="del_coach" onclick="return confirm('Confirm delete? This cannot be undone. Double check plspls');">delete coach</button>
+            </form>
+        </div>
+        <div class="panel">
+            <div class="games">
+
+                <!-- Recent results -->
+
+                <h1 class="head-text">Recent Results</h1>
+                    <div class="results-container">
+                    {% for result in results %}
+                    <div class="result-card result" 
+                    data-id="{{ result.id }}"
+                    data-opposition="{{ result.opposition }}"
+                    data-dcb-score="{{ result.dcb_score|default:'' }}"
+                    data-opp-score="{{ result.opp_score|default:'' }}"
+                    data-date="{{ result.date|date:'Y-m-d' }}" 
+                    data-time="{{ result.time|time:'H:i' }}"
+                    data-location="{{ result.location }}"
+                    data-is-finished="{{ result.is_finished }}">
+                        <div>
+                            <div class="sport-tag">{{ result.dcb_team }}</div>
+                        </div>
+                            <button class="edit-game-btn" data-id="{{ result.id }}">Edit</button>
+                            <button type="button" class="delete-game-btn" 
+                                        onclick="submitDelete('{{ result.id }}', '{{ current_year }}')">
+                                    Delete
+                            </button>
+                            {% if result.dcb_score > result.opp_score %}
+                                <div class="winner-indicator" style="background-color: green !important;">W</div>
+                            {% elif result.dcb_score == result.opp_score %}
+                                <div class="winner-indicator" style="background-color: grey !important;">D</div>
+                            {% else %}
+                                <div class="winner-indicator">L</div>
+                            {% endif %}
+
+                        <div class="team-name">vs {{ result.opposition }}</div>
+                        <div class="date-location">
+                            <div>{{ result.date }}</div>
+                            <div>{{ result.time }}</div>
+                            <div>{{ result.location }}</div>
+                        </div>
+                        <div class="score-container">
+                            <div class="score-team">
+                                <h4>DCB</h4>
+                                <span>{{ result.dcb_score }}</span>
+                            </div>
+                            <div class="vs-separator">-</div>
+                            <div class="score-team">
+                                <h4>{{ result.opposition }}</h4>
+                                <span>{{ result.opp_score }}</span>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                <button class="submit" data-action="results">Show more games</button>
+            </div>
+
+            <!-- Upcoming games -->
+
+            <div class="games upcoming">
+                <h1 class="head-text">Upcoming Games</h1>
+                    <div class="upcoming-container">
+                        {% for upcoming in upcomings %}
+                        <div class="result-card upcoming upcoming-count"
+                            data-id="{{ upcoming.id }}"
+                            data-opposition="{{ upcoming.opposition }}"
+                            data-dcb-score="{{ upcoming.dcb_score|default:'' }}"
+                            data-opp-score="{{ upcoming.opp_score|default:'' }}"
+                            data-date="{{ upcoming.date|date:'Y-m-d' }}" 
+                            data-time="{{ upcoming.time|time:'H:i' }}"
+                            data-location="{{ upcoming.location }}"
+                            data-is-finished="{{ upcoming.is_finished }}">
+
+                            <div class="sport-tag">{{ upcoming.dcb_team }}</div>
+
+                            <button class="edit-game-btn" data-id="{{ upcoming.id }}">Edit</button>
+                            <button type="button" class="delete-game-btn" 
+                                        onclick="submitDelete('{{ upcoming.id }}', '{{ current_year }}')">
+                                    Delete
+                            </button>
+                            <div class="team-name">vs {{ upcoming.opposition }}</div>
+                            <div class="date-location">
+                                <div>{{ upcoming.date }}</div>
+                                <div>{{ upcoming.time }}</div>
+                                <div>{{ upcoming.location }}</div>
+                            </div>
+                        </div>    
+                        {% endfor %} 
+                    </div>
+                    <button class="submit" data-action="upcoming">Show more games</button>
+            </div>
+
+            <!-- Edit team/Add games -->
+
+            <button class="submit" id="edit-team">Edit team information</button>
+            <button class="submit" id="add-game">Add a game</button>
+            <button class="submit" id="add-coach">Add a coach</button>
+
+            <!-- Moedl overlay for dark background -->
+            <div id="modal-backdrop" class="modal-overlay hidden"></div>
+
+            <!-- Edit team hidden model -->
+
+            <div class="hidden model edit-team-model">
+                <span class="close-btn">&times;</span>
+
+                <form method="post" enctype="multipart/form-data" >
+                    <div class="form-control">
+                        <h1>Edit team information</h1>
+                        {% csrf_token %}
+                        {{ team_form|crispy }}
+                    </div>
+                    <button class="submit" type="submit" name='action' value="update_team">Edit team info</button>
+                </form>
+            </div>
+
+            <!-- Hidden add game model -->
+
+            <div class="hidden model add-game-model">
+                <span class="close-btn">&times;</span>
+                <form id="add-game-form" method="post" enctype="multipart/form-data" >
+                    <div class="form-control">
+                        <h1>Add game</h1>
+                        {% csrf_token %}
+                        {{ game_form|crispy }}
+                    </div>
+                    <button class="submit" type="submit" name='action' value="add_game">Add game info</button>
+                </form>
+            </div>
+
+            <!-- Hidden add coach model -->
+
+            <div class="hidden model add-coach-model">
+                <span class="close-btn">&times;</span>
+                <form method="post" enctype="multipart/form-data" >
+                    <div class="form-control">
+                        <h1>Add Coach</h1>
+                        {% csrf_token %}
+                        {{ coach_form|crispy }}
+                    </div>
+                    <button class="submit" type="submit" name='action' value="add_coach">Add Coach</button>
+                </form>
+            </div>
+
+
+            <!-- Hidden edit game model -->
+
+            <div class="hidden model edit-game-model">
+                <span class="close-btn">&times;</span>
+                <div class="form-control">
+                    <form id="edit-game-form" method="POST" action="{% url 'edit-game' year=current_year %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="game_id" id="editGameId">
+                        
+                        <div class="form-group">
+                            <label>Opposition:</label>
+                            <input type="text" name="opposition" id="editOpposition" required class="form-control">
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>DCB Score:</label>
+                                <input type="number" name="dcb_score" id="editDcbScore" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label>Opposition Score:</label>
+                                <input type="number" name="opp_score" id="editOppScore" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Date:</label>
+                                <input type="date" name="date" id="editDate" required class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label>Time:</label>
+                                <input type="time" name="time" id="editTime" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Location:</label>
+                            <input type="text" name="location" id="editLocation" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" name="is_finished" id="editIsFinished"> Game Finished?
+                            </label>
+                        </div>
+                        <button type="submit" class="submit">Edit game information</button>
+                    </form>
+                </div>
+        </div>
+    </div>
+    </div>
+    
+    <!-- Delete form -->
+    <form id="globalDeleteForm" method="POST" style="display: none;">
+        {% csrf_token %} 
+    </form>
+
+    
+{% endblock %}

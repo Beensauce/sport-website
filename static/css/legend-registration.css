@@ -1,0 +1,52 @@
+:root{
+    --crimson: #9C0000;
+    --crimson-dark: #5a0e16;
+    --midnight: #19273D;
+}
+
+.legend-card {
+    background: #f6f7f9;
+    border-radius: 16px;
+    box-shadow: 0 2px 12px rgba(25,39,61,0.07);
+    padding: 1.5rem 1.2rem;
+    width: 270px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 2px solid var(--midnight);
+    transition: transform 0.3s ease;
+}
+.legend-card:hover {
+  transform: scale(1.01);
+}
+.legend-pic {
+    width: 90px;
+    height: 90px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid var(--crimson);
+    margin-bottom: 1rem;
+}
+.legend-name {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--midnight);
+    margin-bottom: 0.5rem;
+    text-align: center;
+}
+.legend-team {
+    font-size: 1rem;
+    color: var(--crimson-dark);
+    margin-bottom: 0.5rem;
+    text-align: center;
+}
+.legend-honors {
+    font-size: 0.98rem;
+    color: var(--midnight);
+    font-style: italic;
+    text-align: center;
+}
+
+.heading-text {
+    margin-bottom: 4rem !important;
+}  

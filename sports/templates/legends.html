@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block head %}
+    <title>DCB Legends</title>
+    <link rel="stylesheet" href="{% static 'css/legends.css' %}">
+    <script src="{% static 'js/legends.js' %}" defer></script>
+{% endblock %}
+{% block meta %}
+    <!-- Meta tags -->
+    <meta property="og:title" content="DCB Lions legends list">
+    <meta name="description" content="Explore the legends at DCB, student-athletes who have graduated and had a positive impact on the sport community">
+    <meta property="og:description" content="Explore the legends at DCB, student-athletes who have graduated and had a positive impact on the sport community">
+    <meta property="og:image" content="{% static 'Pictures/GOAT.jpg' %}">
+{% endblock %}
+
+
+{% block content %}
+    <h1 class="head-text">DCB Legends (Class of 2026 the best)</h1>
+    <div class="legends-page">
+        <div class="filter-section">
+            <label for="season-select">Filter by year:</label>
+            <select name="season" id="season-select">
+                {% for i in years %}
+                    {% if i == 2026 %}
+                        <option value="{{ i }}" selected="selected">{{ i }}</option>
+                    {% else %}
+                        <option value="{{ i }}">{{ i }}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+        </div>
+        <div class="legends-grid">
+            {% for legend in legends %}
+                <div class="legend-card">
+                        <img src="{{ legend.profile_pic_url }}" alt="{{ legend.name }}" class="legend-pic"/>
+                    <div class="legend-name">{{ legend.name }}</div>
+                    <div class="legend-team">{{ legend.teams }}</div>
+                    <div class="legend-honors">“{{ legend.description }}”</div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,206 @@
+:root{
+    --red:#9C0000;
+    --navy-blue:#19273D;
+}
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Open Sans', 'Helvetica', 'Arial', sans-serif;
+}
+
+body{  
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;  
+}
+
+#content{
+    flex: 1;
+}
+
+/* DCB logo */
+.dcb-lions {
+    display: flex;
+    align-items: center;
+}
+
+.dcb-lions .name{
+    margin-bottom: 0 !important;
+    font-weight: bold !important;
+    line-height: 1 !important;
+    font-size: 2rem !important;
+}
+
+.logo {
+    width: 45px !important;
+    height: 45px !important;
+    margin-right: 10px !important;
+}
+
+.name{
+    color:white;
+}
+
+nav{
+  height: 5rem;
+  background-color: var(--navy-blue);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.links-container{
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+nav a{
+    color: white;
+    text-decoration: none;
+    font-size: 1.1rem;
+    transition: color 0.3s;
+    position: relative;
+    padding: 2px;
+    margin: 0 0.8rem;
+}
+
+.mobile-view::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 3px;
+  background-color: var(--red);
+  transition: all 0.3s ease;
+  transform: translateX(-50%);
+}
+
+a:hover{
+  text-decoration: none;
+  color:white;
+}
+
+.links-container a:hover::after {
+  width: 100%;
+}
+
+nav .home-link{
+  margin-right: auto;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+}
+
+nav svg{
+  fill: white;
+}
+
+#sidebar-active{
+  display: none;
+}
+
+.open-sidebar-button, .close-sidebar-button{
+  display: none;
+}
+
+/* Responsive settings, mobile view */
+
+@media(max-width: 500px){
+  .links-container{
+    flex-direction: column;
+    align-items: flex-start;
+    position: fixed;
+    top: 0;
+    right: -100%;
+    z-index: 10;
+    width: 300px;
+    background-color: var(--navy-blue);
+    box-shadow: -5px 0 5px rgba(0, 0, 0, 0.25);
+    transition: 0.75s ease-out;
+  }
+  
+  nav{
+    height:4rem;
+  }
+  nav a{
+    box-sizing: border-box;
+    height: auto;
+    width: 100%;
+    padding: 20px 30px;
+    justify-content: flex-start;
+  }
+
+  .open-sidebar-button, .close-sidebar-button{
+    padding: 20px;
+    display: block;
+  }
+
+  #sidebar-active:checked ~ .links-container{
+    right: 0;
+  }
+  
+  #sidebar-active:checked ~ #overlay{
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9;
+  }
+
+  .home-link{
+    padding-left: 0;
+  }
+}
+
+
+/* Django messages */
+.messages-container{
+    top: 0
+}
+
+.alert {
+    padding: 10px;
+    margin-bottom: 0px !important;
+    position: relative;
+}
+
+.close{
+    position: absolute;
+    top: 5px; 
+    right: 10px; 
+    background: none; 
+    border: none; 
+    font-size: 1.2em;
+}
+
+.alert-success {
+    background-color: #d4edda;
+}
+
+.alert-error {
+    background-color: #ff6464;
+}
+
+.hidden {
+    display: none;
+}
+
+/* Footer */
+footer{
+    width:100%;
+    height:auto;   
+    background-color: var(--navy-blue);
+    color: white;
+    padding: 1rem;
+    text-align: center;
+}
+
+footer p{
+    margin: 0 !important;
+    line-height: normal;
+}

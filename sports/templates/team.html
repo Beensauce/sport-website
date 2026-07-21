@@ -1,0 +1,168 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block head %}
+    <title>{{ team }}</title>
+    <script src="https://kit.fontawesome.com/042d0c3d1e.js" crossorigin="anonymous" defer></script>
+    <link rel="stylesheet" href="{% static 'css/team.css' %}">
+    <script src="{% static 'js/team.js' %}"></script>
+{% endblock %}
+{% block meta %}
+    <!-- Meta tags -->
+    <meta property="og:title" content="{{ team }} | DCB Lions">
+    <meta name="description" content="{{ team.description }}">
+    <meta property="og:description" content="{{ team }} - {{ team.description }}">
+    <meta property="og:image" content="{{ team.get_image }}">
+{% endblock %}
+{% block content %}
+
+    <div class="container">
+        <div class="team-info">
+            <h1 id="head-text" class="head-text" data-team-level="{{ team.level.code }}" data-team-sport="{{ team.sport.code }}" data-team-year="{{ team.year }}">{{ team }}</h1>
+            <img src="{{ team.get_image }}" alt="{{ team }}">   
+            <div class="text">
+                <div class="upper-text">
+                    <div class="key-members">
+                        {% if team.get_coach %}
+                            <h3>Coach: 
+                                    {% for coach in team.get_coach %}
+                                            {{ coach }}{% if not forloop.last %}, {% endif %}    
+                                    {% endfor %}
+                            </h3>
+                        {% endif %}
+                        {% if team.get_captain %}
+                            <h3>Captain: 
+                                    {% for captain in team.get_captain %}
+                                            {{ captain }}{% if not forloop.last %}, {% endif %}    
+                                    {% endfor %}
+                            </h3>
+                        {% endif %}
+                    </div>
+                    {% if team.instagram %}
+                        <a href="{{ team.instagram }}"><i class="fa-brands fa-instagram"></i></a>
+                    {% endif %}
+                </div>
+
+                <div class="description">{{ team.description }}</div>
+            </div>
+            
+            <div class="games">
+                {% if results %}
+                    <h1 class="head-text">Recent Results</h1>
+                        <div class="results-container">
+                        {% for result in results %}
+                        <div class="result-card result">
+                            <div class="sport-tag">{{ result.dcb_team }}</div>
+                                {% if result.dcb_score > result.opp_score %}
+                                    <div class="winner-indicator" style="background-color: green !important;">W</div>
+                                {% elif result.dcb_score == result.opp_score %}
+                                    <div class="winner-indicator" style="background-color: grey !important;">D</div>
+                                {% else %}
+                                    <div class="winner-indicator">L</div>
+                                {% endif %}
+
+                            <div class="team-name">vs {{ result.opposition }}</div>
+                            <div class="date-location">
+                                <div>{{ result.date }}</div>
+                                <div>{{ result.time }}</div>
+                                <div>{{ result.location }}</div>
+                            </div>
+                            <div class="score-container">
+                                <div class="score-team">
+                                    <h4>DCB</h4>
+                                    <span>{{ result.dcb_score }}</span>
+                                </div>
+                                <div class="vs-separator">-</div>
+                                <div class="score-team">
+                                    <h4>{{ result.opposition }}</h4>
+                                    <span>{{ result.opp_score }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <button data-action="results">Show more games</button>  
+                {% endif %}
+            </div>
+            {% if upcomings %}
+                <div class="games upcoming">
+                    <h1 class="head-text">Upcoming Games</h1>
+                        <div class="upcoming-container">
+                            {% for upcoming in upcomings %}
+                            <div class="result-card upcoming upcoming-count">
+                                <div class="sport-tag">{{ upcoming.dcb_team }}</div>
+                                <div class="team-name">vs {{ upcoming.opposition }}</div>
+                                <div class="date-location">
+                                    <div>{{ upcoming.date }}</div>
+                                    <div>{{ upcoming.time }}</div>
+                                    <div>{{ upcoming.location }}</div>
+                                </div>
+                                <div>Upcoming game, come and support :D</div>
+                            </div>    
+                            {% endfor %} 
+                        </div>
+                        <button data-action="upcoming">Show more games</button>
+                </div>
+            {% endif %}
+        </div>
+        <div class="players">
+            <h2 class="head-text" style="margin-right:10rem; margin-bottom:2.25rem;">The team</h2>
+            {% if coaches %}
+                <!-- Coach -->
+                <div class="coaches">
+                    <h2 class="coach" style="margin-right:10rem; margin-bottom:2.25rem;">Coaches</h2>
+                        {% for coach in coaches %}
+                            {% if coach.is_student_coach %}
+                                <div class="player student-coach">
+                                    <img src="{{ coach.profile_pic_url }}" alt="{{ coach }}" class="profile-pic"/>
+                                    <div class="player-name">
+                                        {{ coach }}
+                                        <span class="captain-label student-coach-label">Student coach</span>
+                                    </div>
+                                </div>
+                            {% else %} 
+                                <div class="player head-coach">
+                                    <img src="{{ coach.profile_pic_url }}" alt="{{ coach }}" class="profile-pic"/>
+                                    <div class="player-name">
+                                        {{ coach }}
+                                        <span class="captain-label head-coach-label">Head coach</span>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                </div>
+                <hr style="margin-bottom:1rem;">
+            {% endif %}
+
+            <!-- Captain -->
+            <h2 class="coach" style="margin-right:10rem; margin-bottom:2.25rem;">Players</h2>
+            {% if team.get_captain %}
+                {% for captain in team.get_captain %}            
+                    <a href="{% url 'player' level=team.level.code sport=team.sport.code year=team.year pk=captain.pk %}">
+                        <div class="player captain">
+                                <img src="{{ captain.profile_pic_url }}" alt="{{ captain }}" class="profile-pic"/>
+                            <div class="player-name">
+                                {{ captain }}
+                                <span class="captain-label">CAPTAIN</span>
+                            </div>
+                            <div class="player-number">{{ captain.shirt_number }}</div>
+                            <div class="player-position">{{ captain.position }}</div>
+                        </div>
+                    </a>
+                {% endfor %}
+            {% endif %}
+            
+            <!-- Other Players -->
+            {% for player in players %}
+                <a href="{% url 'player' level=team.level.code sport=team.sport.code year=team.year pk=player.pk %}">
+                    <div class="player">
+                            <img src="{{ player.profile_pic_url }}" alt="{{ player }}" class="profile-pic"/>
+                        <div class="player-name">{{ player }}</div>
+                        <div class="player-number">{{ player.shirt_number }}</div>
+                        <div class="player-position">{{ player.position }}</div>
+                    </div>
+                </a>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
+

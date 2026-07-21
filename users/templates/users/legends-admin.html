@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block head %}
+    <title>{{ request.user.captain.team }} Admin Panel</title>
+    <!-- Tell Google to completely ignore this private page -->
+    <meta name="robots" content="noindex, nofollow">
+    
+    <link rel="stylesheet" href="{% static 'css/captain.css' %}">
+    <script src="{% static 'js/legends-admin.js' %}" defer></script>
+{% endblock %}
+{% block content %}
+    <div id="panels">
+        <div class="unregistered player-list-container panel">
+                    <div class="filter-section">
+                        <label for="season-select">Filter by year:</label>
+                            <select name="season" id="season-select">
+                            {% for i in years %}
+                                {% if i == current_year %}
+                                    <option value="{{ i }}" selected="selected">{{ i }}</option>
+                                {% else %}
+                                    <option value="{{ i }}">{{ i }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <h1>Unregistered legends</h1>
+                    <form method="POST" action="{% url 'legends-approval' %}">
+                        {% csrf_token %}
+                        <table class="player-table">
+                            <thead>
+                                <tr>
+                                    <th>Photo</th>
+                                    <th>Name</th>
+                                    <th>teams</th>
+                                    <th>description</th>
+                                    <th>class of</th>
+                                    <th>Select</th>
+                                </tr>
+                            </thead>
+                            <tbody id="unreg-legends">
+                                {% for legend in unreg_legends %}
+                                    <tr>
+                                        <td>
+                                            <img src="{{ legend.profile_pic_url }}" alt="{{ legend }}" class="profile-pic-thumb"/>
+                                        </td>
+                                        
+                                        <!-- Name & Captain Badge Column -->
+                                        <td class="player-name">
+                                            {{ legend }}
+                                        </td>
+                                        
+                                        <!-- Details Columns -->
+                                        <td class="player-number">{{ legend.teams }}</td>
+                                        <td>{{ legend.description }}</td>
+                                        <td>{{ legend.class_of }}</td>
+                                        
+
+                                        <td><input type="checkbox" name="legend_ids" value="{{ legend.id }}"></td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        <button class="submit" type="submit" name='action' value="reg_legends">Update</button>
+                        <button class="submit" id='delete' type="submit" name='action' value="del_legends" onclick="return confirm('Confirm delete? This cannot be undone. Double check plspls');">delete players</button>
+                    </form>    
+                </div>
+                <div class="registered player-list-container panel">
+                    <h1>Registered legends</h1>
+                    <form method="POST" action="{% url 'legends-approval' %}">
+                        {% csrf_token %}
+                        <table class="player-table">
+                            <thead>
+                                <tr>
+                                    <th>Photo</th>
+                                    <th>Name</th>
+                                    <th>teams</th>
+                                    <th>description</th>
+                                    <th>class of</th>
+                                    <th>Select</th>
+                                </tr>
+                            </thead>
+                            <tbody id="reg-legends">
+                                {% for legend in reg_legends %}
+                                    <tr>
+                                        <td>
+                                            <img src="{{ legend.profile_pic_url }}" alt="{{ legend }}" class="profile-pic-thumb"/>
+                                        </td>
+                                        
+                                        <!-- Name & Captain Badge Column -->
+                                        <td class="player-name">
+                                            {{ legend }}
+                                        </td>
+                                        
+                                        <!-- Details Columns -->
+                                        <td class="player-number">{{ legend.teams }}</td>
+                                        <td>{{ legend.description }}</td>
+                                        <td>{{ legend.class_of }}</td>
+                                        
+
+                                        <td><input type="checkbox" name="legend_ids" value="{{ legend.id }}"></td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        <button class="submit" type="submit" name='action' value="unreg_legends">Update</button>
+                    </form>
+                </div>
+            </div>
+{% endblock %}

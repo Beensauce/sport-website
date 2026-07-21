@@ -1,0 +1,40 @@
+<!-- templates/team_list.html -->
+{% extends 'base_teams.html' %}
+{% load static %}
+
+{% block team_title %}
+    Current Sport Teams
+{% endblock %}
+
+{% block team_js %}
+    <script src="{% static 'js/team_list.js' %}" defer></script>
+{% endblock %}
+
+{% block og_title %}DCB Lions squad lists{% endblock %}
+{% block meta_description %}Explore the official sports teams of the DCB Lions. Check out current rosters, coaching staff, and every single squad{% endblock %}
+{% block og_description %}Browse rosters and team details for all DCB Lions athletic squads{% endblock %}
+
+{% block hero_header %}
+    <h1>Our Teams</h1>
+{% endblock %}
+
+{% block filter_options %}
+    <label for="season-select">Filter by Season:</label>
+    <select name="season" id="season-select">
+        <option value="1">Season 1</option>
+        <option value="2">Season 2</option>
+        <option value="3">Season 3</option>
+        <option value="4">Season 4</option>
+        <option value="5">All season sports</option>
+    </select>
+{% endblock %}
+
+{% block extra_container_content %}
+    <div id="not-available" class="hidden">
+        <h1>This season has not been updated yet, check it out soon!</h1>
+    </div>
+{% endblock %}
+
+{% block card_attributes %}
+    data-season="{{ team.season }}"
+{% endblock %}

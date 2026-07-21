@@ -1,0 +1,31 @@
+# Environment / secrets
+.env
+*.env
+
+# Database
+db.sqlite3
+*.sqlite3
+
+# Media uploads
+/media/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+venv/
+env/
+.venv/
+
+# Django
+staticfiles/
+
+# VS Code
+.vscode/
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# Error logs
+*.log

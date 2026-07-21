@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block head %}
+    <title>Player registration</title>
+
+
+
+    <link rel="stylesheet" href="{% static 'css/legend-registration.css' %}">
+    <link rel="stylesheet" href="{% static 'css/player-registration.css' %}">
+    <script src="{% static 'js/register-legend.js' %}" defer></script>
+{% endblock %}
+{% block meta %}
+    <!-- Meta tags -->
+    <meta property="og:title" content="DCB Lions legends registration">
+    <meta name="description" content="Register to be a legend at DCB sports">
+    <meta property="og:description" content="Register to be a legend at DCB sports">
+    <meta property="og:image" content="{% static 'Pictures/GOAT.jpg' %}">
+{% endblock %}
+
+{% block content %}
+    <h1 class="head-text">Register to be a legend</h1>
+    <div class="main-div">
+        <div class="inside">
+            <form method="POST" enctype="multipart/form-data">
+                <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                    <div class="form-group">
+                        <button class="btn btn-outline-info" type="submit">register</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="inside">
+            <h1 class="heading-text">What it will look like on the website</h1>
+                <div class="legend-card">
+                    <img src="{% static 'Pictures/DaBao.jpg' %}" alt="Juicy cat" class="legend-pic"/>
+                    <div class="legend-name">Your name...</div>
+                    <div class="legend-team">List of teams you played...</div>
+                    <div class="legend-honors">A short description, or quote of you...</div>
+                </div>
+        </div>
+    </div>
+{% endblock %}

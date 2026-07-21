@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block head %}
+    <title>Player registration</title>
+    <link rel="stylesheet" href="{% static 'css/profile.css' %}">
+    <link rel="stylesheet" href="{% static 'css/player-registration.css' %}">
+    <script src="{% static 'js/register-player.js' %}" defer></script>
+{% endblock %}
+{% block meta %}
+    <!-- Meta tags -->
+    <meta property="og:title" content="DCB Lions player registration">
+    <meta name="description" content="Register to be a player at DCB sports">
+    <meta property="og:description" content="Register to be a player at DCB sports">
+    <meta property="og:image" content="{% static 'Pictures/GOAT.jpg' %}">
+{% endblock %}
+{% block content %}
+    <h1 class="head-text">Register to be a player in a team</h1>
+    <div class="main-div">
+        <div class="inside">
+            <form method="POST" enctype="multipart/form-data">
+                <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                    <div class="form-group">
+                        <button class="btn btn-outline-info" type="submit">register</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="inside">
+            <div>
+            <h1 class="heading-text">What it will look like on the website</h1>
+                <article id="captain" class="profile-card anchor-offset" aria-labelledby="captain-name">
+                    <div class="avatar-wrap">
+                        <img id="image-core" src="{% static 'Pictures/DaBao.jpg' %}" alt="Juicy cat"/>
+                    </div>
+                    <h3 id="captain-name" class="player-name">Your name...</h3>
+                    <div class="captain-badge hidden">Captain</div>
+                    <div class="player-number">29</div>
+                    <div class="player-details" id="team-position">Your team... - Position</div>
+                    <div class="player-details" id="year">Year: Year group...</div>
+                    <blockquote class="quote">“Your quote...”</blockquote>
+                </article>
+            </div>
+        </div>
+    </div>
+{% endblock %}

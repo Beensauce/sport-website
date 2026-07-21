@@ -1,0 +1,33 @@
+<!-- templates/past_seasons.html -->
+{% extends 'base_teams.html' %}
+{% load static %}
+
+{% block team_title %}
+    Past seasons
+{% endblock %}
+
+{% block team_js %}
+    <script src="{% static 'js/past-seasons.js' %}" defer></script>
+{% endblock %}
+
+{% block og_title %}DCB Lions past season archive{% endblock %}
+{% block meta_description %}Explore the DCB lions past teams, past seasons{% endblock %}
+{% block og_description %}DCB lions past teams, past seasons{% endblock %}
+
+{% block hero_header %}
+    <h1>Our past Teams (Class of 2026 the best, aka 25-26 season)</h1>
+{% endblock %}
+{% block hero_sub %}Meet our past student athletes{% endblock %}
+
+{% block filter_options %}
+    <label for="season-select">Filter by year:</label>
+    <select name="season" id="season-select">
+        {% for i in years %}
+            {% if i == 2025 %}
+                <option value="{{ i }}" selected="selected">{{ i }}</option>
+            {% else %}
+                <option value="{{ i }}">{{ i }}</option>
+            {% endif %}
+        {% endfor %}
+    </select>
+{% endblock %}

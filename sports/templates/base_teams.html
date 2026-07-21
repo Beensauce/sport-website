@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+    <title>{% block team_title %}{% endblock %}</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'css/team_list.css' %}">
+    {% block team_js %}{% endblock %}
+{% endblock %}
+
+{% block meta %}
+    <!-- Meta tags -->
+    <meta property="og:title" content="{% block og_title %}{% endblock %}">
+    <meta name="description" content="{% block meta_description %}{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}{% endblock %}">
+    <meta property="og:image" content="{% static 'Pictures/GOAT.jpg' %}">
+{% endblock %}
+
+{% block content %}
+    <div style="min-height: 100vh;">
+        <div class="school-container">
+            {% block hero_header %}{% endblock %}
+            <div class="underline"></div>
+            <p>{% block hero_sub %}Meet our student athletes{% endblock %}</p>
+        </div>
+
+        <div class="filter-section">
+            <!-- Custom select drop-downs injected here -->
+            {% block filter_options %}{% endblock %}
+        </div>
+
+        <div id="teams-container">
+            <!-- Any custom elements inside the container (like the hidden message for current seasons) -->
+            {% block extra_container_content %}{% endblock %}
+
+            {% for team in teams %}
+                <!-- Note the flexible data-season attribute block! -->
+                <div class="card team-item" {% block card_attributes %}{% endblock %}>
+                    <img src="{{ team.get_image }}" class="card-img-top team-photo" alt="{{ team.name }} picture">                    
+                    <div class="card-body">
+                        <h5 class="card-title" style="font-weight: bold;">{{ team }}</h5>
+                        
+                        <h6 style="font-weight: 600;">Coach: 
+                            {% for coach in team.get_coach %}
+                                {{ coach }}{% if not forloop.last %}, {% endif %}
+                            {% empty %}
+                                No Coaches yet
+                            {% endfor %}
+                        </h6>
+                           
+                        {% if team.get_student_coach %}
+                            <h6>Student coach: 
+                                {% for coach in team.get_student_coach %}
+                                    {{ coach }}{% if not forloop.last %}, {% endif %}    
+                                {% endfor %}
+                            </h6>
+                        {% endif %}
+                        
+                            <h6>Captain: 
+                                {% for captain in team.get_captain %}
+                                    {{ captain }}{% if not forloop.last %}, {% endif %}    
+                                {% empty %}
+                                    No Captains yet
+                                {% endfor %}
+                            </h6>
+                        
+                        <a href="{% url 'team' level=team.level.code sport=team.sport.code year=team.year %}" class="btn btn-primary btn-visit">View team</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
