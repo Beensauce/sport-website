@@ -45,6 +45,8 @@ def resize_image_field(image_field_attr, max_width, max_height):
         if image_field_attr:
             img = Image.open(image_field_attr)
 
+            img = ImageOps.exif_transpose(img)
+
             if img.height > max_height or img.width > max_width:
                 output_size = (max_width, max_height)
                 img.thumbnail(output_size) # Maintain aspect ratio
