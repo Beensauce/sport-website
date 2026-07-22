@@ -184,7 +184,7 @@ def register_legend(request):
         form = LegendForm(request.POST, request.FILES) # Binds data with fields
         if form.is_valid():
             form.save() # creates player
-            messages.success(request, "You have registered, pls wait whilst beensauce approves")
+            messages.success(request, "You have registered, pls wait whilst the admin approves")
             return redirect('index-page')
     else:
         form = LegendForm() # creates empty form just in case

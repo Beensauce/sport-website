@@ -1,6 +1,6 @@
 from django.db import models
 import random
-from PIL import Image
+from PIL import Image, ImageOps
 from django.core.validators import MinValueValidator
 from django.templatetags.static import static
 # Create your models here.
@@ -45,7 +45,7 @@ def resize_image_field(image_field_attr, max_width, max_height):
         if image_field_attr:
             img = Image.open(image_field_attr)
 
-            if img.height > max_height or img.width > max_height:
+            if img.height > max_height or img.width > max_width:
                 output_size = (max_width, max_height)
                 img.thumbnail(output_size) # Maintain aspect ratio
                 img.save(image_field_attr.path)
@@ -144,7 +144,7 @@ class Coach(models.Model):
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
 
-        resize_image_field(self.image, 350, 150)
+        resize_image_field(self.image, 350, 350)
 
 
 class Player(models.Model):
@@ -194,7 +194,7 @@ class Player(models.Model):
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
 
-        resize_image_field(self.image, 350, 150)
+        resize_image_field(self.image, 350, 350)
 
 
 class Game(models.Model):
@@ -255,7 +255,7 @@ class Legend(models.Model):
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
 
-        resize_image_field(self.image, 450, 450)
+        resize_image_field(self.image, 400, 450)
 
     @property
     def profile_pic_url(self):
